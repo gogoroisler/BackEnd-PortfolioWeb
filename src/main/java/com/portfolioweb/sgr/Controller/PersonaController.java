@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 // anotacion controlador
 @RestController 
 // llamado de front a base
-@CrossOrigin(origins = "https://portfolio-web-argprog.web.app/")
+@CrossOrigin(origins = "https://portfolio-web-argprog.web.app")
 @RequestMapping("/persona")
 
 
