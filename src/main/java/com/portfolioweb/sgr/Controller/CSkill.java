@@ -4,10 +4,10 @@
  */
 package com.portfolioweb.sgr.Controller;
 
-import com.portfolioweb.sgr.Dto.dtoProyecto;
-import com.portfolioweb.sgr.Entity.Proyecto;
+import com.portfolioweb.sgr.Dto.dtoSkill;
+import com.portfolioweb.sgr.Entity.Skill;
 import com.portfolioweb.sgr.Security.Controller.Mensaje;
-import com.portfolioweb.sgr.Service.SProyecto;
+import com.portfolioweb.sgr.Service.SSkill;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,68 +28,67 @@ import org.springframework.web.bind.annotation.RestController;
  * @author user
  */
 @RestController
-@RequestMapping("/proyecto")
-
-public class CProyecto {
+@RequestMapping("/skill")
+@CrossOrigin("origins = https://portfolio-web-argprog.web.app")
+public class CSkill {
     
     @Autowired
-    SProyecto sProyecto;
+    SSkill sSkill;
     
     @GetMapping("/lista")
-    public ResponseEntity<List<Proyecto>> list(){
-       List<Proyecto> list = sProyecto.list();
+    public ResponseEntity<List<Skill>> list(){
+       List<Skill> list = sSkill.list();
        return new ResponseEntity(list, HttpStatus.OK); 
     }
     
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") int id){
-        if(!sProyecto.existsById(id)){
+        if(!sSkill.existsById(id)){
             return new ResponseEntity(new Mensaje("No existe el ID"), HttpStatus.NOT_FOUND);
         }
-        sProyecto.delete(id);
-        return new ResponseEntity(new Mensaje("Educacion eliminada"), HttpStatus.OK);
+        sSkill.delete(id);
+        return new ResponseEntity(new Mensaje("Habilidad eliminada"), HttpStatus.OK);
     }
     
     @PostMapping("/create")
-    public ResponseEntity<?> create(@RequestBody dtoProyecto dtoproyecto){
-        if(StringUtils.isBlank(dtoproyecto.getNombreP()))
+    public ResponseEntity<?> create(@RequestBody dtoSkill dtoskill){
+        if(StringUtils.isBlank(dtoskill.getNombreS()))
             return new ResponseEntity(new Mensaje("El nombre es obligatorio"), HttpStatus.BAD_REQUEST);
-        if(sProyecto.existsByNombreP(dtoproyecto.getNombreP()))
-            return new ResponseEntity(new Mensaje("Ese proyecto ya existe"), HttpStatus.BAD_REQUEST);
+        if(sSkill.existsByNombreS(dtoskill.getNombreS()))
+            return new ResponseEntity(new Mensaje("Esa habilidad ya existe"), HttpStatus.BAD_REQUEST);
         
-        Proyecto proyecto = new Proyecto(dtoproyecto.getNombreP(), dtoproyecto.getDescripcionP());
-        sProyecto.save(proyecto);
+        Skill skill = new Skill(dtoskill.getNombreS(), dtoskill.getPorcentajeS());
+        sSkill.save(skill);
         
-        return new ResponseEntity(new Mensaje("Educacion agregada"), HttpStatus.OK);
+        return new ResponseEntity(new Mensaje("Habilidad agregada"), HttpStatus.OK);
     }
     
         @PutMapping("/update/(id)")
-    public ResponseEntity<?> update(@PathVariable("id") int id, @RequestBody dtoProyecto dtoproyecto){
+    public ResponseEntity<?> update(@PathVariable("id") int id, @RequestBody dtoSkill dtoskill){
         //Validacion por ID
-        if(!sProyecto.existsById(id))
+        if(!sSkill.existsById(id))
             return new ResponseEntity(new Mensaje("ID inexistente"), HttpStatus.BAD_REQUEST);
         // Comparacion de nombre
-        if(sProyecto.existsByNombreP(dtoproyecto.getNombreP()) && sProyecto.getByNombreP(dtoproyecto.getNombreP()).get().getId() != id)
-            return new ResponseEntity(new Mensaje("Proyecto existente"), HttpStatus.BAD_REQUEST);
+        if(sSkill.existsByNombreS(dtoskill.getNombreS()) && sSkill.getByNombreS(dtoskill.getNombreS()).get().getId() != id)
+            return new ResponseEntity(new Mensaje("Habilidad existente"), HttpStatus.BAD_REQUEST);
         // Vacio
-        if(StringUtils.isBlank(dtoproyecto.getNombreP()))
+        if(StringUtils.isBlank(dtoskill.getNombreS()))
             return new ResponseEntity(new Mensaje("Nombre obligatorio"), HttpStatus.BAD_REQUEST);
         
-        Proyecto proyecto = sProyecto.getOne(id).get();
-        proyecto.setNombreP(dtoproyecto.getNombreP());
-        proyecto.setDescripcionP(dtoproyecto.getDescripcionP());
-        proyecto.setImgP((dtoproyecto.getImgP()));
+        Skill skill = sSkill.getOne(id).get();
+        skill.setNombreS(dtoskill.getNombreS());
+        skill.setPorcentajeS((dtoskill.getPorcentajeS()));
         
-        sProyecto.save(proyecto);
-        return new ResponseEntity(new Mensaje("Proyecto actualizada"), HttpStatus.OK);
+        sSkill.save(skill);
+        return new ResponseEntity(new Mensaje("Habilidad actualizada"), HttpStatus.OK);
     }
     
          @GetMapping("/detail/{id}")
-    public ResponseEntity<Proyecto> getById(@PathVariable("id") int id){
-        if(!sProyecto.existsById(id))
+    public ResponseEntity<Skill> getById(@PathVariable("id") int id){
+        if(!sSkill.existsById(id))
             return new ResponseEntity(new Mensaje("no existe"), HttpStatus.BAD_REQUEST);
-        Proyecto proyecto = sProyecto.getOne(id).get();
-        return new ResponseEntity(proyecto, HttpStatus.OK);
+        Skill skill = sSkill.getOne(id).get();
+        return new ResponseEntity(skill, HttpStatus.OK);
     }
 
 }

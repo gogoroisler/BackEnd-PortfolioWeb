@@ -27,8 +27,12 @@ public class Persona {
     @Size(min = 1, max = 50, message = "atencion limite de caracteres")
     private String apellido;
     
-    @Size(min = 1, max = 50, message = "atencion limite de caracteres")
+    @Size(min = 1, max = 455, message = "atencion limite de caracteres")
     private String img;
     
+    @Size(min = 1, max = 455, message = "atencion limite de caracteres")
+    private String descripcion;
     
+    @Size(min = 1, max = 255, message = "atencion limite de caracteres")
+    private String puesto;
 }

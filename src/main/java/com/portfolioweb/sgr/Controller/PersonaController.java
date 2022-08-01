@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 // anotacion controlador
 @RestController 
 // llamado de front a base
-@CrossOrigin(origins = "https://portfolio-web-argprog.web.app")
+
 @RequestMapping("/persona")
 
 
@@ -74,6 +74,8 @@ public class PersonaController {
      * @param nuevoNombre
      * @param nuevoApellido
      * @param nuevoImg
+     * @param nuevoDescripcion
+     * @param nuevoPuesto
      * @return
      */
     @PreAuthorize("hasRole('ADMIN')")
@@ -81,12 +83,16 @@ public class PersonaController {
     public Persona editPersona(@PathVariable Long id,
                                       @RequestParam("nombre") String nuevoNombre,
                                       @RequestParam("apellido") String nuevoApellido,
-                                      @RequestParam("img") String nuevoImg){
+                                      @RequestParam("img") String nuevoImg,
+                                      @RequestParam("descripcion") String nuevoDescripcion,
+                                      @RequestParam("puesto") String nuevoPuesto){
         Persona persona = ipersonaService.findPersona(id);
         
         persona.setNombre(nuevoNombre);
         persona.setApellido(nuevoApellido);
         persona.setImg(nuevoImg);
+        persona.setDescripcion(nuevoDescripcion);
+        persona.setPuesto(nuevoPuesto);
         ipersonaService.savePersona(persona);
         return persona;
     }
